@@ -13,11 +13,18 @@ public class User
 	public string Username { get; init; }
 	public string Password { get; init; }
 	public Role Role { get; private set; }
+	public bool IsBlocked { get; private set; } 
 
-	public User(string username, string password, Role role)
+	public User(string username, string password, Role role,bool isBlocked = false)
 	{
 		Username = username;
 		Password = password;
 		Role = role;
+		IsBlocked = isBlocked;
+	}
+
+	public void BlockUser()
+	{
+		IsBlocked = true;
 	}
 }

@@ -16,8 +16,10 @@ public static class AuthStartup
 		services.AddAutoMapper(typeof(AuthProfile).Assembly);
 
 		services.AddScoped<IAuthService, AuthService>();
+		services.AddScoped<IUserService,UserService>();
 
 		services.AddScoped<IAuthRepository, AuthRepository>();
+		services.AddScoped<IUserRepository, UserRepository>();
 
 		services.AddDbContext<AuthContext>(opt =>
 			opt.UseNpgsql(Config.GetDbConnectionString(), x => x.MigrationsHistoryTable("__EFMigrationsHistory", "users"))
