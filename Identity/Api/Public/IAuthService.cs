@@ -11,4 +11,5 @@ namespace Api.Public;
 public interface IAuthService
 {
 	Task<Result<RegisteredUserDto>> RegisterAsync(RegistrationCredDto creds);
+	Task<Result<AuthenticationResponseDto>> AuthenticateAsync(AuthenticationRequestDto auth);
 }

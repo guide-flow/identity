@@ -1,5 +1,6 @@
 ﻿using Api.Dto;
 using Api.Public;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -16,12 +17,20 @@ public class AuthenticationController : ControllerBase
 		_authService = authService;
 	}
 
-	[HttpPost]
+	[HttpPost("register")]
 	public async Task<ActionResult<RegisteredUserDto>> Register([FromBody] RegistrationCredDto creds)
 	{
 		var result = await _authService.RegisterAsync(creds);
 
 		// Todo: Route not implemented
 		return Created($"http://localhost:5226/api/users/{result.Value.Id}", result.Value);
+	}
+
+	[HttpPost("authenticate")]
+	public async Task<ActionResult<AuthenticationResponseDto>> Authenticate([FromBody] AuthenticationRequestDto auth)
+	{
+		var result = await _authService.AuthenticateAsync(auth);
+
+		return Ok(result.Value);
 	}
 }
