@@ -1,10 +1,6 @@
-﻿using Core.Domain;
+﻿using Common;
+using Core.Domain;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Database;
 
@@ -23,7 +19,7 @@ public class AuthContext : DbContext
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
-		optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=guideflow-identity;SearchPath=users;Username=postgres;Password=kiso;");
+		optionsBuilder.UseNpgsql(Config.GetDbConnectionString());
 
 		base.OnConfiguring(optionsBuilder);
 	}

@@ -4,11 +4,6 @@ using AutoMapper;
 using Core.Domain;
 using Core.Domain.RepositoryInterface;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.UseCase;
 

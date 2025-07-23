@@ -1,9 +1,5 @@
-using Api.Public;
-using Core.Domain.RepositoryInterface;
-using Core.Mappers;
-using Core.UseCase;
-using Infrastructure.Database;
-using Infrastructure.Database.Repository;
+using DotNetEnv;
+using Identity.Api.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +10,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AuthContext>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+if (builder.Environment.IsDevelopment())
+{
+    Env.Load();
+}
 
-builder.Services.AddAutoMapper(typeof(AuthProfile).Assembly);
+// Setup core Auth "module"
+builder.Services.SetupAuth();
 
 var app = builder.Build();
 
