@@ -1,3 +1,6 @@
+using DotNetEnv;
+using Identity.Api.Startup;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,14 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+if (builder.Environment.IsDevelopment())
+{
+    Env.Load();
+}
+
+// Setup core Auth "module"
+builder.Services.SetupAuth();
 
 var app = builder.Build();
 
