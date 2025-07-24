@@ -10,5 +10,6 @@ public class AuthProfile : Profile
 	{
 		CreateMap<RegistrationCredDto, User>();
 		CreateMap<User, RegisteredUserDto>();
+		CreateMap<User, UserDto>().ReverseMap();
 	}
 }
