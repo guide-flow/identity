@@ -15,7 +15,7 @@ public class User
 	public Role Role { get; private set; }
 	public bool IsBlocked { get; private set; } 
 
-	public User(string username, string password, Role role,bool isBlocked = false)
+	public User(string username, string password, Role role, bool isBlocked = false)
 	{
 		Username = username;
 		Password = password;
