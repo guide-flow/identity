@@ -11,5 +11,6 @@ namespace Api.Public
     public interface IUserService
     {
         Task<Result<UserDto>> BlockUser(int Id);
+        Task<Result<List<UserDto>>> GetAll();
     }
 }

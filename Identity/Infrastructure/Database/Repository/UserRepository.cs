@@ -1,4 +1,5 @@
-﻿using Core.Domain;
+﻿using Common.Domain;
+using Core.Domain;
 using Core.Domain.RepositoryInterface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Database.Repository
 {
-    public class UserRepository:IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly AuthContext _context;
         private readonly DbSet<User> _users;
@@ -19,6 +20,12 @@ namespace Infrastructure.Database.Repository
             _context = context;
             _users = _context.Set<User>();
         }
+
+        public async Task<List<User>> GetAll()
+        {
+            return await _users.Where(u => !u.Role.Equals(Role.Admin)).ToListAsync();
+        }
+
         public async Task<User> GetById(int id)
         {
             var user = await _users

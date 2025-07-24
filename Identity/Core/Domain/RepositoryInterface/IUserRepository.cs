@@ -9,6 +9,7 @@ namespace Core.Domain.RepositoryInterface
     public interface IUserRepository
     {
         Task<User> GetById(int id);
-        Task Update(User user);    
+        Task Update(User user); 
+        Task<List<User>> GetAll();
     }
 }

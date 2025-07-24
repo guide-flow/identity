@@ -18,6 +18,15 @@ namespace Identity.Api.Controllers
         }
 
         //[Authorize(Policy = "administratorPolicy")]
+        [HttpGet()]
+        public async Task<ActionResult<List<UserDto>>> GetUsers()
+        {
+            var result = await _userService.GetAll();
+
+            return Ok(result.Value);
+        }
+
+        //[Authorize(Policy = "administratorPolicy")]
         [HttpPut("block/{id}")]
         public async Task<ActionResult<UserDto>> BlockUser(int id)
         {

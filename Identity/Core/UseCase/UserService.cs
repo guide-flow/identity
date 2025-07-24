@@ -3,11 +3,6 @@ using Api.Public;
 using AutoMapper;
 using Core.Domain.RepositoryInterface;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.UseCase
 {
@@ -43,6 +38,12 @@ namespace Core.UseCase
             {
                 return Result.Fail<UserDto>($"An error occurred: {ex.Message}");
             }
+        }
+
+        public async Task<Result<List<UserDto>>> GetAll()
+        {
+            var users = await _userRepository.GetAll();
+            return Result.Ok(_mapper.Map<List<UserDto>>(users));
         }
     }
 }
