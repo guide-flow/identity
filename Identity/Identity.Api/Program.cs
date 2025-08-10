@@ -22,20 +22,7 @@ if (builder.Environment.IsDevelopment())
 // Setup core Auth "module"
 builder.Services.SetupAuth();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new()
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = Config.GetIssuer(),
-            ValidAudience = Config.GetAudience(),
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Config.GetSecretKey()))
-        };
-    });
+builder.Services.AddJwtAuth();
 
 var app = builder.Build();
 
