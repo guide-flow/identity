@@ -1,9 +1,7 @@
-using Common;
 using DotNetEnv;
 using Identity.Api.Startup;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,5 +38,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
+    authContext.Database.Migrate();
+}
 
 app.Run();

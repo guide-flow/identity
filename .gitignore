@@ -57,3 +57,4 @@ nunit-*.xml
 
 Identity/Identity.Api/.env
 Identity/.env.docker
+Identity/Infrastructure/Migrations
