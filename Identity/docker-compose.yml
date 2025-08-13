@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  identity:
+    build:
+      context: .
+      dockerfile: Identity.Api/Dockerfile
+    container_name: identity
+    ports:
+      - '5226:5226'
+    environment:
+      ASPNETCORE_ENVIRONMENT: 'Production'
+      ASPNETCORE_URLS: 'http://+:5226'
+      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+      SECRET_KEY: ${SECRET_KEY}
+      ISSUER: ${ISSUER}
+      AUDIENCE: ${AUDIENCE}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      retries: 5
+
+volumes:
+  pgdata:

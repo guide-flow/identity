@@ -27,4 +27,11 @@ public static class AuthStartup
 
 		return services;
 	}
+
+	public static void ApplyMigrations(this IApplicationBuilder app)
+	{
+		using var scope = app.ApplicationServices.CreateScope();
+		var dbContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
+		dbContext.Database.Migrate();
+    }
 }

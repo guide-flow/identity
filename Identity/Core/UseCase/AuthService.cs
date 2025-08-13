@@ -40,7 +40,7 @@ public class AuthService : IAuthService
 	}
 
 	// When user fetched, more claims could be attached
-	private string GenerateAccessToken(string username)
+	private static string GenerateAccessToken(string username)
 	{
 		var claims = new List<Claim> {
 			new(JwtRegisteredClaimNames.Sub, username)
