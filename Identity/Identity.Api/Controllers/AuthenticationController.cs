@@ -30,7 +30,8 @@ public class AuthenticationController : ControllerBase
 	public async Task<ActionResult<AuthenticationResponseDto>> Authenticate([FromBody] AuthenticationRequestDto auth)
 	{
 		var result = await _authService.AuthenticateAsync(auth);
+		if (result.IsFailed) return BadRequest(result.Errors.FirstOrDefault()?.Message);
 
-		return Ok(result.Value);
+        return Ok(result.Value);
 	}
 }

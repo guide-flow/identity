@@ -32,19 +32,19 @@ public class AuthService : IAuthService
 
 	public async Task<Result<AuthenticationResponseDto>> AuthenticateAsync(AuthenticationRequestDto auth)
 	{
-		// When implemented
-		// var userResult = await user/stakeholderService.GetByUsernameAsync(auth.Username);
-		await Task.Delay(200);
+		var user = await _authRepository.GetByUsernameAsync(auth.Username);
+		if (user is null) return Result.Fail("User not found");
 
-		return new AuthenticationResponseDto(auth.Username, GenerateAccessToken(auth.Username));
+        return new AuthenticationResponseDto(auth.Username, GenerateAccessToken(user));
 	}
 
-	// When user fetched, more claims could be attached
-	private static string GenerateAccessToken(string username)
+	private static string GenerateAccessToken(User user)
 	{
 		var claims = new List<Claim> {
-			new(JwtRegisteredClaimNames.Sub, username)
-		};
+			new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+			new(JwtRegisteredClaimNames.Email, user.Username),
+			new("role", user.Role.ToString()),
+        };
 
 		var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Config.GetSecretKey()));
 		var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
