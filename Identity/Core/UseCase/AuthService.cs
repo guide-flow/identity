@@ -25,15 +25,22 @@ public class AuthService : IAuthService
 
 	public async Task<Result<RegisteredUserDto>> RegisterAsync(RegistrationCredDto creds)
 	{
-		var registeredUser = await _authRepository.RegisterAsync(_mapper.Map<User>(creds));
+		if (creds.Password != creds.ConfirmPassword) return Result.Fail("Passwords do not match");
 
-		return _mapper.Map<RegisteredUserDto>(registeredUser);
+		var user = _mapper.Map<User>(creds);
+		user.HashPassword();
+
+        await _authRepository.RegisterAsync(user);
+
+		return _mapper.Map<RegisteredUserDto>(user);
 	}
 
 	public async Task<Result<AuthenticationResponseDto>> AuthenticateAsync(AuthenticationRequestDto auth)
 	{
 		var user = await _authRepository.GetByUsernameAsync(auth.Username);
 		if (user is null) return Result.Fail("User not found");
+
+		if (!user.VerifyPassword(auth.Password)) return Result.Fail("Invalid password");
 
         return new AuthenticationResponseDto(auth.Username, GenerateAccessToken(user));
 	}
