@@ -1,11 +1,6 @@
 ﻿using Core.Domain;
 using Core.Domain.RepositoryInterface;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Database.Repository;
 
@@ -20,10 +15,16 @@ public class AuthRepository : IAuthRepository
 		_users = _context.Set<User>();
 	}
 
-	public async Task<User> RegisterAsync(User user)
+    public async Task<User> RegisterAsync(User user)
 	{
 		_users.Add(user);
 		await _context.SaveChangesAsync();
 		return user;
 	}
+
+    public async Task<User?> GetByUsernameAsync(string username)
+    {
+        var user = await _users.FirstOrDefaultAsync(u => u.Username == username);
+		return user;
+    }
 }

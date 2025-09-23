@@ -39,10 +39,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    var authContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
-    authContext.Database.Migrate();
-}
+//app.ApplyMigrations();
 
 app.Run();
