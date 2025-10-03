@@ -4,7 +4,7 @@ public static class Config
 {
 	public static string GetDbConnectionString()
 	{
-		return Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")!;
+		return Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_IDENTITY")!;
 	}
 
 	public static string GetSecretKey()

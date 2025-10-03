@@ -39,6 +39,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.ApplyMigrations();
+app.ApplyMigrations();
 
 app.Run();

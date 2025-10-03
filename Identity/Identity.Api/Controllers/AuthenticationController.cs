@@ -2,6 +2,7 @@
 using Api.Public;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Identity.Api.Controllers;
@@ -34,4 +35,25 @@ public class AuthenticationController : ControllerBase
 
         return Ok(result.Value);
 	}
+
+	[Authorize]
+	[HttpGet("validate-token")]
+	public ActionResult ValidateToken()
+	{
+        var username = User.FindFirstValue(ClaimTypes.Email);
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var role = User.FindFirstValue(ClaimTypes.Role);
+
+        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(username))
+        {
+            return Unauthorized("Invalid token");
+        }
+
+        return Ok(new
+        {
+            sub = id,
+            email = username,
+            role = role
+        });
+    }
 }

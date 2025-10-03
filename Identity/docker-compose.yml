@@ -9,7 +9,7 @@ services:
     ports:
       - '5226:5226'
     environment:
-      ASPNETCORE_ENVIRONMENT: 'Production'
+      ASPNETCORE_ENVIRONMENT: 'Development'
       ASPNETCORE_URLS: 'http://+:5226'
       DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
       SECRET_KEY: ${SECRET_KEY}
