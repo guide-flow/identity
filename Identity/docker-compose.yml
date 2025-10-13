@@ -11,11 +11,15 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: 'Development'
       ASPNETCORE_URLS: 'http://+:5226'
-      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+      DB_CONNECTION_STRING_IDENTITY: ${DB_CONNECTION_STRING}
       SECRET_KEY: ${SECRET_KEY}
       ISSUER: ${ISSUER}
       AUDIENCE: ${AUDIENCE}
+      OTEL_EXPORTER_OTLP_ENDPOINT: 'http://jaeger:4317'
+      NATS_URL: nats://nats:4222
     depends_on:
+      nats:
+        condition: service_started
       postgres:
         condition: service_healthy
 
@@ -34,6 +38,21 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       retries: 5
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    ports:
+      - '4317:4317'
+      - '4318:4318'
+      - '16686:16686'
+
+  nats:
+    image: nats:latest
+    container_name: nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
 
 volumes:
   pgdata:

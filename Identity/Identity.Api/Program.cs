@@ -4,6 +4,8 @@ using Identity.Api.Startup;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using NATS.Client;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,18 @@ builder.Services.AddSingleton<IConnection>(sp =>
 });
 
 builder.Services.AddSingleton<IdentitySagaHandler>();
+
+builder.Services
+    .AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService("Identity.Api"))
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation();
+
+        tracing.AddOtlpExporter();
+    });
 
 if (builder.Environment.IsDevelopment())
 {
