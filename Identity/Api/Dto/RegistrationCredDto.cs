@@ -7,4 +7,10 @@ using System.Threading.Tasks;
 
 namespace Api.Dto;
 
-public record RegistrationCredDto(string Username, string Password, string ConfirmPassword, Role Role);
+public class RegistrationCredDto
+{
+    public string Username { get; set; }
+    public string Password { get; set; }
+    public string ConfirmPassword { get; set; }
+    public Role Role { get; set; }
+}

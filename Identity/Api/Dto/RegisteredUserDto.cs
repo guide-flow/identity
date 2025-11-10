@@ -6,4 +6,8 @@ using System.Threading.Tasks;
 
 namespace Api.Dto;
 
-public record RegisteredUserDto(int Id, string Username);
+public class RegisteredUserDto
+{
+    public int Id { get; set; }
+    public string Username { get; set; }
+}

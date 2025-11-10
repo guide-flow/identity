@@ -1,3 +1,7 @@
 ﻿namespace Api.Dto;
 
-public record AuthenticationRequestDto(string Username, string Password);
+public class AuthenticationRequestDto
+{
+    public string Username { get; set; }
+    public string Password { get; set; }
+}
