@@ -21,6 +21,12 @@ public class AuthenticationController : ControllerBase
 	[HttpPost("register")]
 	public async Task<ActionResult<RegisteredUserDto>> Register([FromBody] RegistrationCredDto creds)
 	{
+		// Prevent admin role creation through registration
+		if (creds.Role == Common.Domain.Role.Admin)
+		{
+			return BadRequest("Admin accounts cannot be created through registration.");
+		}
+
 		var result = await _authService.RegisterAsync(creds);
 
 		// Todo: Route not implemented
